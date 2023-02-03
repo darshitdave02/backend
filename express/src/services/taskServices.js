@@ -19,7 +19,7 @@ const addTask = async (body) => {
 
 const completeTask = async (_id) => {
   try {
-     await db.Task.update({isCompleted: true},{
+    await db.Task.update({isCompleted: true},{
       where: {
         id: _id
       }
