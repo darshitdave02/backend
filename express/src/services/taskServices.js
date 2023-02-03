@@ -1,41 +1,54 @@
-let db = [];
-let id  = 0;
+const db = require('../../../database/models');
 
 const getAllTasks = async () => {
-  return db;
+  const tasks = await db.Task.findAll();
+  return tasks;
 };
 
 const addTask = async (body) => {
-  db.push({
-    name: body.name,
-    _id: id,
-    isCompleted: false 
-  });
-  id+=1;
-  return db;
+  try {
+    const task = await db.Task.create({name: body.name, isCompleted: body.isCompleted});
+    return task;
+  } 
+  catch (err) {
+    console.log('failed to add task');
+  }
+  
   
 };
 
-const updateTask = async (id) => {
-  db = db.map((item) => {
-    if(item._id == id)
-    {
-      item.isCompleted = true;
-    }
-    return item;
-  });
-  return db;
+const completeTask = async (_id) => {
+  try {
+     await db.Task.update({isCompleted: true},{
+      where: {
+        id: _id
+      }
+      
+    });
+    
+  }
+  catch (err) {
+    console.log('failed to update task');
+  }
 };
 
-const deleteTask = async (id) => {
-  db = db.filter((item) => item._id != id);
-  return db;
+const deleteTask = async (_id) => {
+  try {
+    await db.Task.destroy ({
+      where: {
+        id: _id
+      }
+    });
+  }
+  catch (err) {
+    console.log('failed to delete task');
+  }
 };
 
 module.exports = {
   getAllTasks,
   addTask,
-  updateTask,
+  completeTask,
   deleteTask
 };
 

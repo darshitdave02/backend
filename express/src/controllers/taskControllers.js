@@ -2,9 +2,8 @@ const taskServices = require('../services/taskServices');
 
 const getAllTasks = async (req, res) => {
   try {
-    const allTasks = await taskServices.getAlltasks();
+    const allTasks = await taskServices.getAllTasks();
     res.status(200).json(allTasks);
-
   }
   catch (err) {
     res.status(500).json(err);
@@ -19,24 +18,26 @@ const addTask = async (req, res) => {
   }
   catch (err) {
     res.status(500).json(err);
+    res.end();
   }
 };
 
 const updateTask = async (req, res) => {
   try {
     const taskId = Number(req.params.id);
-    const task = await taskServices.completeTask(taskId);
-    res.status(200).json(task);
+    await taskServices.completeTask(taskId);
+    res.end();
   } catch (err) {
     res.status(500).json(err);
+    res.end();
   }
 };
 
 const deleteTask = async (req, res) => {
   try {
     const taskId = Number(req.params.id);
-    const task = await taskServices.deteteTask(taskId);
-    res.status(200).json(task);
+     await taskServices.deleteTask(taskId);
+     res.end();
   } catch (err) {
     res.status(500).json(err);
   }
